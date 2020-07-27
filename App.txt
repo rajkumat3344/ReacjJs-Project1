@@ -1,0 +1,57 @@
+import React, { useEffect, useState } from "react";
+import { Pagination } from "./components/Pagination";
+import Card from "./components/Card";
+import Header from "./components/Header";
+
+export default function App() {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [error, setError] = useState(null);
+
+  const searching = async event => {
+    await fetch(
+      `https://rickandmortyapi.com/api/episode/?name=${event.target.value}`
+    )
+      .then(response => response.json())
+      .then(data =>
+        data.results
+          ? (() => {
+              setData(data.results);
+              setError(null);
+            })()
+          : (() => {
+              setData([]);
+              setError(data.error);
+            })()
+      );
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [page]);
+  const loadData = async () => {
+    await fetch(`https://rickandmortyapi.com/api/episode?page=${page}`)
+      .then(response => response.json())
+      .then(data => setData(data.results));
+  };
+  return (
+    <div className="App">
+      <Header searching={searching} />
+      <div className="container">
+        <div className="row justify-content-md-center">
+          {error ? (
+            <div className="card text-center">
+              <div className="card-header">Error</div>
+              <div className="card-body">
+                <p className="card-text">{error}</p>
+              </div>
+            </div>
+          ) : (
+            data.length > 0 && data.map(prop => <Card prop={prop} />)
+          )}
+        </div>
+      </div>
+      <Pagination active={page} setPage={setPage} />
+    </div>
+  );
+}

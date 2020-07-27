@@ -1,0 +1,18 @@
+import React from "react";
+
+export default function Card({ prop }) {
+  return (
+    <div key={prop.id} className="card text-center" style={{ margin: "1rem" }}>
+      <img
+        src="https://media.king5.com/assets/KHOU/images/8b9179eb-9072-42d2-92a7-e4941412a2ff/8b9179eb-9072-42d2-92a7-e4941412a2ff_750x422.jpg"
+        className="card-img-top"
+        alt="img"
+      />
+      <ul className="list-group">
+        <li className="list-group-item">Episode name: {prop.name}</li>
+        <li className="list-group-item">Episode code: {prop.episode}</li>
+        <li className="list-group-item">Episode date: {prop.air_date}</li>
+      </ul>
+    </div>
+  );
+}
